@@ -65,7 +65,7 @@ The following table lists the configurable parameters for `vaules.yaml` of the e
 
 Once Helm is set up properly, add the repo as follows:
 
-```shell
+```
 $ helm repo add etcd-autobackup https://jujy-oidc.github.io/etcd-autobackup-helm-repo/stable
 $ helm repo update
 Hang tight while we grab the latest from your chart repositories...
@@ -74,7 +74,7 @@ Update Complete. ⎈Happy Helming!⎈
 ```
 
 ### Confirm the repository
-```shell
+```
 $ helm repo list
 NAME           	URL
 ...
@@ -83,7 +83,7 @@ etcd-autobackup	https://jujy-oidc.github.io/etcd-autobackup-helm-repo/stable
 
 ### Search charts in the repository
 You can then run `helm search repo etcd-autobackup` to see the charts.
-```shell
+```
 $ helm search repo etcd-autobackup
 NAME                           	CHART VERSION	APP VERSION	DESCRIPTION         
 etcd-autobackup/etcd-autobackup	1.0.0        	           	A Helm chart for etcd-autobackup service
@@ -92,15 +92,15 @@ etcd-autobackup/etcd-autobackup	1.0.0        	           	A Helm chart for etcd-
 ### Custom values
 Download `values.yaml` and write it according to your convenience. Check the [configuration](#-configuration).
 
-```shell
-wget https://github.com/JUJY-OIDC/etcd-autobackup-helm-repo/blob/main/helm-chart/values.yaml
+```
+wget https://github.com/JUJY-OIDC/etcd-autobackup-helm-repo/blob/main/etcd-autobackup/values.yaml
 ```
 
 ### Using the chart
 Specify `values.yaml` using `--values` option and install helm chart.
 Make sure the `values.yaml` path is clear.
 
-```shell
+```
 helm install etcd-autobackup etcd-autobackup/etcd-autobackup --values=values.yaml
 ```
 
