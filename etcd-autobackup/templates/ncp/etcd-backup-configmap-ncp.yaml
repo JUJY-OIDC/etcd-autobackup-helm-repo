@@ -1,0 +1,74 @@
+{{- if eq .Values.cloudProvider "ncp" }}
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: etcd-backup-configmap-ncp
+  namespace: etcd-autobackup
+  labels:
+    app: etcd
+data:
+  test.sh: |
+    #!/bin/sh
+
+     #== aws config ==
+    # create directory 
+    mkdir -p ~/.aws
+
+    # create configure file 
+    cat > ~/.aws/config << EOF
+    [default]
+    region = {{ .Values.ncp.region }}
+    output = json
+    EOF
+
+    # create credential file 
+    cat > ~/.aws/credentials << EOF
+    [default]
+    aws_access_key_id = {{ .Values.ncp.access_key_id }}
+    aws_secret_access_key = {{ .Values.ncp.secret_access_key }}
+    EOF
+
+    # authorization
+    chmod 600 ~/.aws/config ~/.aws/credentials
+
+    #== Create s3 ==
+    BUCKET_NAME='jujy-etcd-backup-{{ .Values.ncp.region }}'
+    NCP_ENDPOINT_URL=https://kr.object.ncloudstorage.com
+
+    # check if bucket exists
+    existing_bucket=$(aws --endpoint-url=$NCP_ENDPOINT_URL s3api list-buckets --query "Buckets[?Name=='$BUCKET_NAME'].Name" --output text)
+
+    if [ "$existing_bucket" = "$BUCKET_NAME" ]; then
+    echo "Bucket '$BUCKET_NAME' is already exists"
+    else
+      # create bucket 
+      if aws --endpoint-url=$NCP_ENDPOINT_URL s3api create-bucket --bucket "$BUCKET_NAME" --region {{ .Values.ncp.region }} 2>/dev/null; then
+        echo "Created bucket '$BUCKET_NAME' Successfully."
+      else
+        echo "Failed to create bucket '$BUCKET_NAME'. Please check the error message." >&2
+        exit 1
+      fi
+    fi
+
+    #== Apply s3 lifecycle ==
+    aws  --endpoint-url=$NCP_ENDPOINT_URL s3api put-bucket-lifecycle-configuration --bucket $BUCKET_NAME --lifecycle-configuration file://root/aws-lifecycle.json
+
+
+    #take a snapshot
+    echo "ETCD_ENDPOINT=$ETCD_ENDPOINT"
+    ETCDCTL_API=3 etcdctl snapshot save --endpoints={{ .Values.etcd.endpoint }} --cacert=/cert/ca.crt  --cert=/cert/server.crt  --key=/cert/server.key  etcd-backup.db --debug
+    ETCDCTL_API=3 etcdctl --write-out=table snapshot status etcd-backup.db
+
+    #backup to the ncp storage
+
+    #timestamp in seconds
+    timestamp=$(date -u +"%Y-%m-%dT%H:%M:%S")
+    #tiemstamp in days
+    folder_name=$(date -u +"%Y-%m-%d")
+
+    aws --endpoint-url=$NCP_ENDPOINT_URL s3 cp /etcd-backup.db s3://$BUCKET_NAME/${folder_name}/etcd-backup-${timestamp}.db
+
+    echo "Snapshot Uploaded a to NCP Storage Successfully." 
+
+{{- end }}

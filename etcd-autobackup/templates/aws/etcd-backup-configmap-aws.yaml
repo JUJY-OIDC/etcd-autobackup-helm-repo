@@ -1,0 +1,67 @@
+{{- if eq .Values.cloudProvider "aws" }}
+
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: etcd-backup-configmap-aws
+  namespace: etcd-autobackup
+  labels:
+    app: etcd
+data:
+  test.sh: |
+    #!/bin/sh
+
+    #== aws config ==
+    # create directory 
+    mkdir -p ~/.aws
+
+    # create configure file
+    cat > ~/.aws/config << EOF
+    [default]
+    region = {{ .Values.aws.region }}
+    output = json
+    EOF
+
+    # create credential file 
+    cat > ~/.aws/credentials << EOF
+    [default]
+    aws_access_key_id = {{ .Values.aws.access_key_id }}
+    aws_secret_access_key = {{ .Values.aws.secret_access_key }}
+    EOF
+
+    # authentication
+    chmod 600 ~/.aws/config ~/.aws/credentials
+
+    #== create s3 ==
+    BUCKET_NAME='jujy-etcd-backup-{{ .Values.aws.region }}'
+    
+    if aws s3 ls "s3://$BUCKET_NAME" --region {{ .Values.aws.region }} 2>&1 | grep -q 'NoSuchBucket'; then
+      echo "Creating S3 bucket: $BUCKET_NAME"
+      aws s3 mb s3://$BUCKET_NAME --region {{ .Values.aws.region }}
+      if [ $? -eq 0 ]; then
+        echo "S3 bucket '$BUCKET_NAME' created successfully."
+      else
+        echo "Failed to create S3 bucket '$BUCKET_NAME'. Please check the error message."
+      fi
+
+    else
+      echo "Bucket already exists: $BUCKET_NAME"
+    fi
+    #== Apply s3 lifecycle ==
+    aws s3api put-bucket-lifecycle-configuration --bucket $BUCKET_NAME --lifecycle-configuration file://root/aws-lifecycle.json
+
+    #take a snapshot
+    echo 'ETCD_ENDPOINT={{ .Values.etcd.endpoint }}'
+    ETCDCTL_API=3 etcdctl snapshot save --endpoints={{ .Values.etcd.endpoint }} --cacert=/cert/ca.crt  --cert=/cert/server.crt  --key=/cert/server.key  etcd-backup.db --debug
+    ETCDCTL_API=3 etcdctl --write-out=table snapshot status etcd-backup.db
+
+    #timestamp in seconds
+    timestamp=$(date -u +"%Y-%m-%dT%H:%M:%S")
+    #tiemstamp in days
+    folder_name=$(date -u +"%Y-%m-%d")
+
+    aws s3 cp /etcd-backup.db s3://$BUCKET_NAME/${folder_name}/etcd-backup-${timestamp}.db
+
+    echo "Snapshot Uploaded a to AWS Bucket Successfully." 
+
+{{- end }}
