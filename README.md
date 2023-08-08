@@ -18,7 +18,8 @@
 **☁️ Save snapshot data at Cloud**
 
 - Save the snapshot data in a cloud provider of your choice.
-- Provided vendor : AWS, OCI, NCP
+- Divided into folders by date, it provides the convenience of searching even when there are many snapshots with many changes.
+- Provided vendor : [AWS](https://aws.amazon.com/), [OCI](https://www.oracle.com/cloud/), [NCP](https://www.ncloud.com/)
 
 **🧸 User-friendly**
 
@@ -27,12 +28,12 @@
 
 **🕹️ Versioning**
 
-- Seperation of hot data(7 days, archiving) and cold data(15 days, deletion) using lifecycle policy. 
+- Seperation of hot data(7 days, archiving) and cold data(15 days, deletion) using lifecycle policy.
 - Currently only available in AWS.
 
 **🎈 Singleton Pattern**
 - One application must be running at a time so that jobs are not duplicated (snapshots are not duplicated).
-- Adopt Singleton Pattern to activate only one application instance at the same time
+- Adopt Singleton Pattern to activate only one application instance at the same time.
 
 <br>
 
