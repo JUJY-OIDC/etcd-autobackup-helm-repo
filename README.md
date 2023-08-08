@@ -93,7 +93,7 @@ etcd-autobackup/etcd-autobackup	1.0.0        	           	A Helm chart for etcd-
 Download `values.yaml` and write it according to your convenience. Check the [configuration](#-configuration).
 
 ```
-wget https://github.com/JUJY-OIDC/etcd-autobackup-helm-repo/blob/main/etcd-autobackup/values.yaml
+$ wget https://github.com/JUJY-OIDC/etcd-autobackup-helm-repo/blob/main/etcd-autobackup/values.yaml
 ```
 
 ### Using the chart
@@ -101,7 +101,7 @@ Specify `values.yaml` using `--values` option and install helm chart.
 Make sure the `values.yaml` path is clear.
 
 ```
-helm install etcd-autobackup etcd-autobackup/etcd-autobackup --values=values.yaml
+$ helm install etcd-autobackup etcd-autobackup/etcd-autobackup --values=values.yaml
 ```
 
 All objects created by helm are managed in the `etcd-autobackup` namespace.
