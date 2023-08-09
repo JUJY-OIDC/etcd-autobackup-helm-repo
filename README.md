@@ -47,7 +47,7 @@ The following table lists the configurable parameters for `vaules.yaml` of the e
 | `cloudProvider` (required)           | The cloud provider where you want to save the snapshot. You can choose from `aws`, `oci` or `ncp`. | `oci`                        |
 | `oci.user_ocid`                      | If you choose oci, value of user ocid. <br> `ocid1.user.oci1..xxxxxxx` | none                         |
 | `oci.tenancy_ocid`                   | If you choose oci, value of tenancy ocid. `ocid1.tenancy.oc1..xxxxxxx` | none                         |
-| `oci.api_key_content`                   | If you choose oci, value of the path of oci api key. This must exist on the master node. Write the path from the master node. <br><br> You can create a key file in one line with the following command: <br> `$ awk -v ORS='\\n' '1' <key file>`| none                         |
+| `oci.api_key_content`                   | If you choose oci, put the contents of the oci api key file on a single line.<br> You can create a key file in one line with the following command: <br> `$ awk -v ORS='\\n' '1' <key file>`| none                         |
 | `oci.bucket_region`                  | If you choose oci, value of bucket region.                   | none                         |
 | `oci.namespace`                      | If you choose oci, value of namsapce.                        | none                         |
 | `aws.access_key_id`                  | If you choose aws, value of access key id                    | none                         |
