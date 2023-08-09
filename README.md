@@ -43,12 +43,11 @@ The following table lists the configurable parameters for `vaules.yaml` of the e
 
 | Parameter                            | Description                                                  | Default                      |
 | ------------------------------------ | ------------------------------------------------------------ | ---------------------------- |
-| `etcd.cert_path` (required)          | Value of the directory path containing `ca.crt`, `server.crt`, `server.key`. | `/etc/kubernetes/pki/etcd/ ` |
 | `etcd.endpoint` (required)           | Value of endpoint of etcd. This must contain port number and must be a private IP. | none                         |
 | `cloudProvider` (required)           | The cloud provider where you want to save the snapshot. You can choose from `aws`, `oci` or `ncp`. | `oci`                        |
 | `oci.user_ocid`                      | If you choose oci, value of user ocid. <br> `ocid1.user.oci1..xxxxxxx` | none                         |
 | `oci.tenancy_ocid`                   | If you choose oci, value of tenancy ocid. `ocid1.tenancy.oc1..xxxxxxx` | none                         |
-| `oci.api_key_path`                   | If you choose oci, value of the path of oci api key. This must exist on the master node. Write the path from the master node. <br><br> You can create a key file in one line with the following command: <br> `$ awk -v ORS='\\n' '1' <key file>`| none                         |
+| `oci.api_key_content`                   | If you choose oci, value of the path of oci api key. This must exist on the master node. Write the path from the master node. <br><br> You can create a key file in one line with the following command: <br> `$ awk -v ORS='\\n' '1' <key file>`| none                         |
 | `oci.bucket_region`                  | If you choose oci, value of bucket region.                   | none                         |
 | `oci.namespace`                      | If you choose oci, value of namsapce.                        | none                         |
 | `aws.access_key_id`                  | If you choose aws, value of access key id                    | none                         |
