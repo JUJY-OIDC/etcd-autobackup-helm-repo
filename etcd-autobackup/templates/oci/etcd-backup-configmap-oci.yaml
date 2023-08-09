@@ -50,9 +50,23 @@ data:
     ETCDCTL_API=3 etcdctl --write-out=table snapshot status etcd-backup.db
 
 
-    #backup to the oci storage
-    echo "Upload Snapshot to Oracle Storage."
-    BUCKET_NAME='jujy-etcd-backup-{{ .Values.oci.bucket_region }}'
+     ######create oci bucket 
+      # Check if the bucket exists
+      BUCKET_NAME="jujy-etcd-backup-{{ .Values.oci.bucket_region }}"
+      if $HOME/bin/oci os bucket get --bucket-name "$BUCKET_NAME" 2>&1 | grep -q 'BucketNotFound'; then
+        echo "Creating OCI bucket '$BUCKET_NAME'..."
+        $HOME/bin/oci os bucket create --compartment-id {{ .Values.oci.tenancy_ocid }} --name "$BUCKET_NAME"
+        # Check the response status
+        if [ $? -eq 0 ]; then
+            echo "OCI bucket '$BUCKET_NAME' created successfully."
+        else
+            echo "Failed to create OCI bucket '$BUCKET_NAME'. Please check the error message."
+            exit 1
+        fi
+      else
+        echo "OCI bucket '$BUCKET_NAME' already exists. Skipping bucket creation."
+      fi
+    
 
     #timestamp in seconds
     timestamp=$(date -u +"%Y-%m-%dT%H:%M:%S")
