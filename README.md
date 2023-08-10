@@ -98,7 +98,9 @@ wget https://raw.githubusercontent.com/JUJY-OIDC/etcd-autobackup-helm-repo/main/
 
 ### Using the chart
 Specify `values.yaml` using `--values` option and install helm chart.
-Make sure the `values.yaml` path is clear.
+- Make sure the `values.yaml` path is clear. 
+- Before installing Helm, make sure that the `/root/.kube/config` file exists on the server you are installing on.
+- Because deployment uses it as hostPath.
 
 ```
 helm install etcd-autobackup etcd-autobackup/etcd-autobackup --values=values.yaml
