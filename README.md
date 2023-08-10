@@ -45,17 +45,17 @@ The following table lists the configurable parameters for `vaules.yaml` of the e
 | ------------------------------------ | ------------------------------------------------------------ | ---------------------------- |
 | `etcd.endpoint` (required)           | Value of endpoint of etcd. This must contain port number and must be a private IP. | none                         |
 | `cloudProvider` (required)           | The cloud provider where you want to save the snapshot. You can choose from `aws`, `oci` or `ncp`. | `oci`                        |
-| `oci.user_ocid`                      | If you choose oci, value of user ocid. <br> `ocid1.user.oci1..xxxxxxx` | none                         |
-| `oci.tenancy_ocid`                   | If you choose oci, value of tenancy ocid. `ocid1.tenancy.oc1..xxxxxxx` | none                         |
-| `oci.api_key_content`                   | If you choose oci, put the contents of the oci api key file on a single line.<br> You can create a key file in one line with the following command: <br> `$ awk -v ORS='\\n' '1' <key file>`| none                         |
-| `oci.bucket_region`                  | If you choose oci, value of bucket region.                   | none                         |
-| `oci.namespace`                      | If you choose oci, value of namsapce.                        | none                         |
-| `aws.access_key_id`                  | If you choose aws, value of access key id                    | none                         |
-| `aws.secret_access_key`              | If you choose aws, value of secret access key                | none                         |
-| `aws.region`                         | If you choose aws, value of default region for aws cli       | none                         |
-| `ncp.access_key_id`                  | If you choose ncp, value of access key id                    | none                         |
-| `ncp.secret_access_key`              | If you choose ncp, value secret access key                   | none                         |
-| `ncp.region`                         | If you choose ncp, value of default region                   | none                         |
+| `oci.user_ocid`                      | If you chose oci, value of user ocid. <br> `ocid1.user.oci1..xxxxxxx` | none                         |
+| `oci.tenancy_ocid`                   | If you chose oci, value of tenancy ocid. `ocid1.tenancy.oc1..xxxxxxx` | none                         |
+| `oci.api_key_content`                   | If you chose oci, put the contents of the oci api key file on a single line.<br> You can create a key file in one line with the following command: <br> `$ awk -v ORS='\\n' '1' <key file>`| none                         |
+| `oci.bucket_region`                  | If you chose oci, value of bucket region.                   | none                         |
+| `oci.namespace`                      | If you chose oci, value of namsapce.                        | none                         |
+| `aws.access_key_id`                  | If you chose aws, value of access key id                    | none                         |
+| `aws.secret_access_key`              | If you chose aws, value of secret access key                | none                         |
+| `aws.region`                         | If you chose aws, value of default region for aws cli       | none                         |
+| `ncp.access_key_id`                  | If you chose ncp, value of access key id                    | none                         |
+| `ncp.secret_access_key`              | If you chose ncp, value secret access key                   | none                         |
+| `ncp.region`                         | If you chose ncp, value of default region                   | none                         |
 
 <br>
 
@@ -93,7 +93,7 @@ etcd-autobackup/etcd-autobackup	1.0.0        	           	A Helm chart for etcd-
 Download `values.yaml` and write it according to your convenience. Check the [configuration](#-configuration).
 
 ```
-wget https://github.com/JUJY-OIDC/etcd-autobackup-helm-repo/blob/main/etcd-autobackup/values.yaml
+wget https://raw.githubusercontent.com/JUJY-OIDC/etcd-autobackup-helm-repo/main/etcd-autobackup/values.yaml
 ```
 
 ### Using the chart
